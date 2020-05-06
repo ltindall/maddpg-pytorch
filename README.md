@@ -1,3 +1,25 @@
+## Install
+```
+git clone git@github.com:shariqiqbal2810/maddpg-pytorch.git
+cd maddpg-pytorch 
+(setup virtualenv if you want; this is what I do)
+pyenv virtualenv 3.6.9 maddpg-pytorch 
+pyenv local maddpg-pytorch 
+(end of virtualenv steps)
+git clone https://github.com/openai/baselines.git
+cd baselines/
+pip install tensorflow-gpu==1.14
+pip install -e .
+cd .. 
+git clone git@github.com:ltindall/multiagent-particle-envs.git
+cd multiagent-particle-envs
+pip install -e . 
+cd .. 
+pip install -r requirements.txt
+
+
+```
+
 # MADDPG-PyTorch
 PyTorch Implementation of MADDPG from [*Multi-Agent Actor-Critic for Mixed
 Cooperative-Competitive Environments*](https://arxiv.org/abs/1706.02275) (Lowe et. al. 2017)

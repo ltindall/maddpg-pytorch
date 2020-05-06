@@ -6,7 +6,7 @@ import numpy as np
 from gym.spaces import Box, Discrete
 from pathlib import Path
 from torch.autograd import Variable
-from tensorboardX import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 from utils.make_env import make_env
 from utils.buffer import ReplayBuffer
 from utils.env_wrappers import SubprocVecEnv, DummyVecEnv
@@ -112,7 +112,7 @@ def run(config):
 
     maddpg.save(run_dir / 'model.pt')
     env.close()
-    logger.export_scalars_to_json(str(log_dir / 'summary.json'))
+    #logger.export_scalars_to_json(str(log_dir / 'summary.json'))
     logger.close()
 
 
@@ -125,8 +125,11 @@ if __name__ == '__main__':
     parser.add_argument("--seed",
                         default=1, type=int,
                         help="Random seed")
-    parser.add_argument("--n_rollout_threads", default=1, type=int)
-    parser.add_argument("--n_training_threads", default=6, type=int)
+    parser.add_argument("--n_rollout_threads", default=1, type=int,
+                        help="Number or parallel training env processes to run. " \
+                        "Typically the number of threads on your machine.")
+    parser.add_argument("--n_training_threads", default=6, type=int,
+                        help="PyTorch parameter.")
     parser.add_argument("--buffer_length", default=int(1e6), type=int)
     parser.add_argument("--n_episodes", default=25000, type=int)
     parser.add_argument("--episode_length", default=25, type=int)
