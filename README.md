@@ -1,6 +1,6 @@
 ## Install
 ```
-git clone git@github.com:shariqiqbal2810/maddpg-pytorch.git
+git clone git@github.com:ltindall/maddpg-pytorch.git
 cd maddpg-pytorch 
 (setup virtualenv if you want; this is what I do)
 pyenv virtualenv 3.6.9 maddpg-pytorch 
