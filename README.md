@@ -2,10 +2,11 @@
 ```
 git clone git@github.com:ltindall/maddpg-pytorch.git
 cd maddpg-pytorch 
-(setup virtualenv if you want; this is what I do)
+(setup virtualenv if you want; this is what I do, but replace with whatever virtualenv you like)
 pyenv virtualenv 3.6.9 maddpg-pytorch 
 pyenv local maddpg-pytorch 
 (end of virtualenv steps)
+pip install -r requirements.txt
 git clone https://github.com/openai/baselines.git
 cd baselines/
 pip install tensorflow-gpu==1.14
@@ -15,9 +16,6 @@ git clone git@github.com:ltindall/multiagent-particle-envs.git
 cd multiagent-particle-envs
 pip install -e . 
 cd .. 
-pip install -r requirements.txt
-
-
 ```
 
 # MADDPG-PyTorch
