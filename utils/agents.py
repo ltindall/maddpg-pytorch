@@ -62,6 +62,7 @@ class DDPGAgent(object):
             action (PyTorch Variable): Actions for this agent
         """
         action = self.policy(obs)
+        #print("discret_action = ",self.discrete_action)
         if self.discrete_action:
             if explore:
                 action = gumbel_softmax(action, hard=True)
@@ -69,8 +70,9 @@ class DDPGAgent(object):
                 action = onehot_from_logits(action)
         else:  # continuous action
             if explore:
-                action += Variable(Tensor(self.exploration.noise()),
-                                   requires_grad=False)
+                noise = Variable(Tensor(self.exploration.noise()), requires_grad=False)
+                action += noise 
+                #print("noise = ",noise)
             action = action.clamp(-1, 1)
         return action
 

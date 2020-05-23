@@ -83,7 +83,8 @@ def run(config):
             agent_actions = [ac.data.numpy() for ac in torch_agent_actions]
             # rearrange actions to be per environment
             actions = [[ac[i] for ac in agent_actions] for i in range(config.n_rollout_threads)]
-            next_obs, rewards, dones, infos = env.step(actions)
+            #print("actions sent to env = ",actions)
+            next_obs, rewards, dones, infos = env.step(actions) # env.step() calls env.step_async() then env.step_wait()
             replay_buffer.push(obs, agent_actions, rewards, next_obs, dones)
             obs = next_obs
             t += config.n_rollout_threads
@@ -99,6 +100,7 @@ def run(config):
                                                       to_gpu=USE_CUDA)
                         maddpg.update(sample, a_i, logger=logger)
                     maddpg.update_all_targets()
+                    #print("update")
                 maddpg.prep_rollouts(device='cpu')
         ep_rews = replay_buffer.get_average_rewards(
             config.episode_length * config.n_rollout_threads)

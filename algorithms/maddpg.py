@@ -133,6 +133,7 @@ class MADDPG(object):
 
         curr_agent.policy_optimizer.zero_grad()
 
+        # why not just always use gumbel-softmax?
         if self.discrete_action:
             # Forward pass as if onehot (hard=True) but backprop through a differentiable
             # Gumbel-Softmax sample. The MADDPG paper uses the Gumbel-Softmax trick to backprop
@@ -158,7 +159,7 @@ class MADDPG(object):
             vf_in = torch.cat((obs[agent_i], curr_pol_vf_in),
                               dim=1)
         pol_loss = -curr_agent.critic(vf_in).mean()
-        pol_loss += (curr_pol_out**2).mean() * 1e-3
+        pol_loss += (curr_pol_out**2).mean() * 1e-3 # where does this come from?
         pol_loss.backward()
         if parallel:
             average_gradients(curr_agent.policy)
