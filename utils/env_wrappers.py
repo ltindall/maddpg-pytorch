@@ -104,6 +104,7 @@ class DummyVecEnv(VecEnv):
                                 env.agents]
         else:
             self.agent_types = ['agent' for _ in env.agents]
+        self.agent_names = [agent.name for agent in env.agents]
         self.ts = np.zeros(len(self.envs), dtype='int')
         self.actions = None
 

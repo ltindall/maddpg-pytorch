@@ -166,7 +166,11 @@ class MADDPG(object):
         torch.nn.utils.clip_grad_norm(curr_agent.policy.parameters(), 0.5)
         curr_agent.policy_optimizer.step()
         if logger is not None:
-            logger.add_scalars('agent%i/losses' % agent_i,
+            # logger.add_scalars('agent%i/losses' % agent_i,
+            #                    {'vf_loss': vf_loss,
+            #                     'pol_loss': pol_loss},
+            #                    self.niter)
+            logger.add_scalars('{}/losses'.format(curr_agent.name),
                                {'vf_loss': vf_loss,
                                 'pol_loss': pol_loss},
                                self.niter)
@@ -239,8 +243,8 @@ class MADDPG(object):
         agent_init_params = []
         alg_types = [adversary_alg if atype == 'adversary' else agent_alg for
                      atype in env.agent_types]
-        for acsp, obsp, algtype in zip(env.action_space, env.observation_space,
-                                       alg_types):
+        for acsp, obsp, algtype, name in zip(env.action_space, env.observation_space,
+                                       alg_types, env.agent_names):
             num_in_pol = obsp.shape[0]
             if isinstance(acsp, Box):
                 discrete_action = False
@@ -259,7 +263,8 @@ class MADDPG(object):
                 num_in_critic = obsp.shape[0] + get_shape(acsp)
             agent_init_params.append({'num_in_pol': num_in_pol,
                                       'num_out_pol': num_out_pol,
-                                      'num_in_critic': num_in_critic})
+                                      'num_in_critic': num_in_critic, 
+                                      'name': name})
         init_dict = {'gamma': gamma, 'tau': tau, 'lr': lr,
                      'hidden_dim': hidden_dim,
                      'alg_types': alg_types,
